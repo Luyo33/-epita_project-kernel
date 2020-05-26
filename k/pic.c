@@ -1,0 +1,33 @@
+#include <k/kstd.h>
+
+#include "multiboot.h"
+#include "io.h"
+#include "idt.h"
+
+void init_pic(void)
+{
+  /* ICW1 */
+	outb(0x20 , 0x11);
+	outb(0xA0 , 0x11);
+
+	/* ICW2 */
+	outb(0x21 , 0x20);
+	outb(0xA1 , 0x28);
+
+	/* ICW3 */
+	outb(0x21 , 4);
+	outb(0xA1 , 2);
+
+	/* ICW4 */
+	outb(0x21 , 0x01);
+	outb(0xA1 , 0x01);
+
+  outb(0x21 , 0xfc);
+  outb(0xA1 , 0xff);
+
+  outb(0x20, 0x20);
+  outb(0xA1, 0x20);
+
+	outb(0xA0, 0x3f);
+  __asm__("sti\n");
+}
